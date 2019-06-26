@@ -1,0 +1,450 @@
+{
+  "carding_waste_details": [
+    {
+      "flat_waste": 83.726,
+      "godown": "A",
+      "sweep_waste": 74.687,
+      "total_waste": 158.413
+    },
+    {
+      "flat_waste": 92.696,
+      "godown": "D",
+      "sweep_waste": 89.919,
+      "total_waste": 182.615
+    }
+  ],
+  "color": "blue",
+  "count": 20,
+  "date": "22.3.2019",
+  "kgs": 4000,
+  "labor": 2,
+  "machine_production_details": {
+    {
+      "cur_production": 963.346,
+      "eb_details": {
+        "number_of_brakes": 5,
+        "units": 59.742
+      },
+      "godown": "A",
+      "machine_id": "C1",
+      "machine_type": "CARDING",
+      "production_breakup": [
+        {
+          "color": "black",
+          "cur_production": 85.331,
+          "number_of_spinbox": 240
+        },
+        {
+          "color": "FO",
+          "cur_production": 16.02,
+          "number_of_spinbox": 240
+        }
+      ],
+      "running_hours": 6.6
+    },
+    {
+      "cur_production": 268.808,
+      "eb_details": {
+        "number_of_brakes": 5,
+        "units": 71.632
+      },
+      "godown": "A",
+      "machine_id": "C2",
+      "machine_type": "CARDING",
+      "production_breakup": [
+        {
+          "color": "black",
+          "cur_production": 897.562,
+          "number_of_spinbox": 240
+        },
+        {
+          "color": "FO",
+          "cur_production": 28.888,
+          "number_of_spinbox": 240
+        }
+      ],
+      "running_hours": 6.6
+    },
+    {
+      "cur_production": 461.239,
+      "eb_details": {
+        "number_of_brakes": 5,
+        "units": 77.817
+      },
+      "godown": "A",
+      "machine_id": "C3",
+      "machine_type": "CARDING",
+      "production_breakup": [
+        {
+          "color": "black",
+          "cur_production": 72.718,
+          "number_of_spinbox": 240
+        },
+        {
+          "color": "FO",
+          "cur_production": 861.415,
+          "number_of_spinbox": 240
+        }
+      ],
+      "running_hours": 6.6
+    },
+    {
+      "cur_production": 604.872,
+      "eb_details": {
+        "number_of_brakes": 5,
+        "units": 10.068
+      },
+      "godown": "A",
+      "machine_id": "C4",
+      "machine_type": "CARDING",
+      "production_breakup": [
+        {
+          "color": "black",
+          "cur_production": 782.575,
+          "number_of_spinbox": 240
+        },
+        {
+          "color": "FO",
+          "cur_production": 377.851,
+          "number_of_spinbox": 240
+        }
+      ],
+      "running_hours": 6.6
+    },
+    {
+      "cur_production": 170.576,
+      "eb_details": {
+        "number_of_brakes": 5,
+        "units": 91.477
+      },
+      "godown": "D",
+      "machine_id": "C5",
+      "machine_type": "CARDING",
+      "production_breakup": [
+        {
+          "color": "black",
+          "cur_production": 460.2,
+          "number_of_spinbox": 240
+        },
+        {
+          "color": "FO",
+          "cur_production": 933.114,
+          "number_of_spinbox": 240
+        }
+      ],
+      "running_hours": 6.6
+    },
+    {
+      "cur_production": 100.239,
+      "eb_details": {
+        "number_of_brakes": 5,
+        "units": 25.383
+      },
+      "godown": "D",
+      "machine_id": "C6",
+      "machine_type": "CARDING",
+      "production_breakup": [
+        {
+          "color": "black",
+          "cur_production": 642.16,
+          "number_of_spinbox": 240
+        },
+        {
+          "color": "FO",
+          "cur_production": 902.29,
+          "number_of_spinbox": 240
+        }
+      ],
+      "running_hours": 6.6
+    },
+    {
+      "eb_details": {
+        "units": 75.648
+      },
+      "godown": "A",
+      "machine_id": "BR1",
+      "machine_type": "BLOWROOM",
+      "waste_details": {
+        "filter_waste": 80.308,
+        "mbo_waste": 89.585,
+        "powder_waste": 18.604,
+        "sweeping_waste": 77.843,
+        "total_waste": 266.34
+      }
+    },
+    {
+      "eb_details": {
+        "units": 25.646
+      },
+      "godown": "D",
+      "machine_id": "BR2",
+      "machine_type": "BLOWROOM",
+      "waste_details": {
+        "filter_waste": 73.233,
+        "mbo_waste": 36.164,
+        "powder_waste": 87.406,
+        "sweeping_waste": 33.544,
+        "total_waste": 230.347
+      }
+    },
+    {
+      "cur_production": 895.976,
+      "eb_details": {
+        "number_of_brakes": 5,
+        "units": 71.338
+      },
+      "godown": "B",
+      "machine_id": "DM1",
+      "machine_type": "DRAWING",
+      "running_hours": 7.5,
+      "waste_details": {
+        "fan_waste": 57.698,
+        "slaver_waste": 22.942,
+        "sweeping_waste": 13.545
+      }
+    },
+    {
+      "cur_production": 699.007,
+      "eb_details": {
+        "number_of_brakes": 5,
+        "units": 36.931
+      },
+      "godown": "B",
+      "machine_id": "DM2",
+      "machine_type": "DRAWING",
+      "running_hours": 7.5,
+      "waste_details": {
+        "fan_waste": 50.266,
+        "slaver_waste": 24.871,
+        "sweeping_waste": 49.92
+      }
+    },
+    {
+      "color_details": [
+        {
+          "color": "black",
+          "cur_production": 410.306,
+          "number_of_spinbox": 240
+        },
+        {
+          "color": "FO",
+          "cur_production": 244.955,
+          "number_of_spinbox": 240
+        }
+      ],
+      "eb_details": {
+        "number_of_brakes": 5,
+        "units": 96.952
+      },
+      "godown": "B",
+      "machine_id": "OE1",
+      "machine_type": "OE",
+      "running_hours": 5.5,
+      "waste_details": {
+        "rotor_waste": 4.747,
+        "slaver_waste": 83.42,
+        "yarn_waste": 62.203
+      }
+    },
+    {
+      "color_details": [
+        {
+          "color": "black",
+          "cur_production": 511.4,
+          "number_of_spinbox": 240
+        },
+        {
+          "color": "FO",
+          "cur_production": 517.526,
+          "number_of_spinbox": 240
+        }
+      ],
+      "eb_details": {
+        "number_of_brakes": 5,
+        "units": 72.114
+      },
+      "godown": "B",
+      "machine_id": "OE2",
+      "machine_type": "OE",
+      "running_hours": 5.5,
+      "waste_details": {
+        "rotor_waste": 4.394,
+        "slaver_waste": 75.793,
+        "yarn_waste": 59.128
+      }
+    },
+    {
+      "color_details": [
+        {
+          "color": "black",
+          "cur_production": 812.86,
+          "number_of_spinbox": 240
+        },
+        {
+          "color": "FO",
+          "cur_production": 913.107,
+          "number_of_spinbox": 240
+        }
+      ],
+      "eb_details": {
+        "number_of_brakes": 5,
+        "units": 91.868
+      },
+      "godown": "B",
+      "machine_id": "OE3",
+      "machine_type": "OE",
+      "running_hours": 5.5,
+      "waste_details": {
+        "rotor_waste": 58.337,
+        "slaver_waste": 36.716,
+        "yarn_waste": 37.459
+      }
+    },
+    {
+      "common_waste_details": {
+        "sweep_waste": 87.187
+      },
+      "eb_details": {
+        "units": 13.105
+      },
+      "machine_id": "TFO1",
+      "machine_type": "TFO",
+      "production_details": [
+        {
+          "color": "blue",
+          "count": 20,
+          "cur_production": 732.863,
+          "godown": "C",
+          "running_hours": 7.5,
+          "sider": "A",
+          "sider_name": "Ram",
+          "waste_details": {
+            "yarn_waste": 99.363
+          }
+        },
+        {
+          "color": "green",
+          "count": 20,
+          "cur_production": 415.621,
+          "running_hours": 7.5,
+          "sider": "B",
+          "sider_name": "Raja",
+          "waste_details": {
+            "yarn_waste": 65.371
+          }
+        }
+      ]
+    },
+    {
+      "common_waste_details": {
+        "sweep_waste": 98.26
+      },
+      "eb_details": {
+        "units": 18.672
+      },
+      "machine_id": "TFO2",
+      "machine_type": "TFO",
+      "production_details": [
+        {
+          "color": "blue",
+          "count": 20,
+          "cur_production": 81.35,
+          "godown": "C",
+          "running_hours": 7.5,
+          "sider": "A",
+          "sider_name": "Ram",
+          "waste_details": {
+            "yarn_waste": 63.451
+          }
+        },
+        {
+          "color": "green",
+          "count": 20,
+          "cur_production": 247.846,
+          "running_hours": 7.5,
+          "sider": "B",
+          "sider_name": "Raja",
+          "waste_details": {
+            "yarn_waste": 14.77
+          }
+        }
+      ]
+    },
+    {
+      "common_waste_details": {
+        "sweep_waste": 60.402
+      },
+      "eb_details": {
+        "units": 61.547
+      },
+      "machine_id": "TFO3",
+      "machine_type": "TFO",
+      "production_details": [
+        {
+          "color": "blue",
+          "count": 20,
+          "cur_production": 915.1,
+          "godown": "C",
+          "running_hours": 7.5,
+          "sider": "A",
+          "sider_name": "Ram",
+          "waste_details": {
+            "yarn_waste": 53.953
+          }
+        },
+        {
+          "color": "green",
+          "count": 20,
+          "cur_production": 21.784,
+          "running_hours": 7.5,
+          "sider": "B",
+          "sider_name": "Raja",
+          "waste_details": {
+            "yarn_waste": 48.969
+          }
+        }
+      ]
+    },
+    {
+      "color": "blue",
+      "common_waste_details": {
+        "sweep_waste": 87.647
+      },
+      "count": 20,
+      "eb_details": {
+        "units": 26.729
+      },
+      "godown": "B",
+      "machine_id": "CW10",
+      "machine_type": "CHEESEWINDING",
+      "production_details": [
+        {
+          "cur_production": 689.717,
+          "running_hours": 7.5,
+          "sider": "A",
+          "sider_name": "Ram",
+          "waste_details": {
+            "yarn_waste": 23.666
+          }
+        },
+        {
+          "color": "green",
+          "count": 20,
+          "cur_production": 533.905,
+          "running_hours": 7.5,
+          "sider": "B",
+          "sider_name": "Raja",
+          "waste_details": {
+            "yarn_waste": 69.123
+          }
+        }
+      ]
+    }
+  },
+  "month_of_total": "",
+  "overall_waste_details": {
+    "A_godown_waste_percentage": 10.39,
+    "D_godown_waste_percentage": 45.96
+  },
+  "shift": "C"
+}
