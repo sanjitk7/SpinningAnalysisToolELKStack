@@ -59,7 +59,7 @@ def create_machine_data(rows):
                #     break
     
 def format_date(date):
-    return datetime.datetime.strptime(date,'%y.%m.%d').strftime('%Y-%m-%d')
+    return datetime.datetime.strptime(date,'%d.%m.%y').strftime('%Y-%m-%d')+ "T12:00:00"
 
 def convert_to_int(number):
     return int(round(float(number),0))
