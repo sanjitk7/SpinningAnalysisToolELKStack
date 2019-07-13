@@ -6,57 +6,113 @@ Created on Sat Jun 29 12:32:34 2019
 @author: eperiyasamy
 """
 
+import constants
+
 import csv
 import json
 import datetime
+import progress_bar_queue
+import queue
+import time
+from threading import current_thread
+
+import test_func
+from UI_notification_queue import UINotification
+
+import sys
+#print("sys path:", sys.path)
 from elasticsearch import Elasticsearch
 
 glb_id=0
 carding_count = 0
+total_rows=0
+processed_row=0
 
 ES_HOST = {"host" : "localhost", "port" : 9200}
 INDEX_NAME='oe_index'
 TYPE_NAME_MACHINE = 'machine'
+SUCCESS_EVENT = 'success'
 
 es = Elasticsearch(hosts = [ES_HOST])
- 
 
-def convert_to_json(filename):
+def convert_to_json(filename,root):
     global carding_count
+    global processed_row
+    global notify_q, glb_id
     
-    with open(filename) as f:
-        reader = csv.DictReader(f)
-        rows = list(reader)
+    # Initialize for every run as processed_row is a global variable
+    processed_row=0
+    
+    rows=[]
+    try:
+        with open(filename) as f:
+            reader = csv.DictReader(f)
+            rows = list(reader)
+    except FileNotFoundError:
+        constants.stop_processing = True
+        err_str = "File not found: " + filename
+        err = (constants.file_not_found, err_str)
+        constants.notify_q.put(err)
+        return
+    except EnvironmentError:
+        constants.stop_processing = True
+        err_str = "Enviornment error opening " + filename
+        err = (constants.os_error, err_str)
+        constants.notify_q.put(err)
+        return
     
     with open('test.json', 'w') as f:
         json.dump(rows, f)
         
-        
-    if es.indices.exists(INDEX_NAME):
-        print("deleting '%s' index..." % (INDEX_NAME))
-        res = es.indices.delete(index = INDEX_NAME)
-        print(" response: '%s'" % (res))
+    try:    
+        if es.indices.exists(INDEX_NAME):
+            print("deleting '%s' index..." % (INDEX_NAME))
+            res = es.indices.delete(index = INDEX_NAME)
+            print(" response: '%s'" % (res))
+    except:
+        raise ConnectionError("Cannot connect to Elasticsearch")
     
+    create_machine_data(rows,root)
     
-    create_machine_data(rows)
-    print("carding count:", carding_count)
+    # publish event to UI event queue if processed successfully
+    if not constants.stop_processing:
+        constants.successfully_processed = True
+        msg = (SUCCESS_EVENT, "")
+        constants.notify_q.put(msg)
     
-def create_machine_data(rows):
+    # Change the state for other consumers
+    constants.stop_processing = True
+    glb_id = 0
+    
+def create_machine_data(rows,root):
+    global processed_row
+    global total_rows
+    
+#    q = queue.Queue(maxsize=30)
+#    app = progress_bar_queue.SomeClass(q,len(rows),root)
+#    #print ("app:" + str(app))
+#    app.start()
+    #app.mainloop()
+    total_rows= len(rows)
     #print(rows[0])
-    print("\n &&&&&&&&&&&&&&&&&&&&&&&7  \n")
     new_dict = {}
-    i=0
+
     for row in rows:
+        if constants.stop_processing:
+            break
         for k in row:
             if "Unnamed"  not in k:
                 new_dict[k] = row[k]
+                
             else:
                 #print(new_dict)
                 persist_to_es(new_dict)
+                #time.sleep(1)
                 new_dict.clear()
-              #  i+=1
-               # if i==11:
-               #     break
+                processed_row += 1
+#                app.onThread(app.increment_progress_bar, processed_row)
+                if constants.stop_processing:
+                    break
     
 def format_date(date):
     return datetime.datetime.strptime(date,'%d.%m.%y').strftime('%Y-%m-%d')+ "T12:00:00"
@@ -289,4 +345,4 @@ def persist_to_es(d):
  
     
     
-convert_to_json("OEProductionChart.csv")
+#convert_to_json("OEProductionChart.csv")
