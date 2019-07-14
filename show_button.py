@@ -40,6 +40,7 @@ frame = tk.Frame(root).pack()
 #self.Border = tk.Frame(self, relief='flat', borderwidth=4)
 
 message = tk.StringVar()
+source_of_csv_file = ""
 
 
 error_message = tk.StringVar()
@@ -63,6 +64,8 @@ error_lbl = tk.Label(root, text="Current Status: No Errors")
 labelfont = ('times', 20, 'bold')
 
 def upload():
+    global source_of_csv_file
+    
     btn2['state'] = 'disabled'
     btn3['state'] = 'disabled'
     
@@ -75,6 +78,7 @@ def upload():
         if filename:
             data_xls = pd.read_excel(filename, 'Sheet1', index_col=None)
             data_xls.to_csv(constants.csv_filename, encoding='utf-8')
+            source_of_csv_file = filename
             
             l1.config(text= filename + "\nSuccessfully Uploaded!",bg='green', fg='black', font=labelfont, height=3, width=10)
             l1.pack(expand=YES, fill=BOTH)
@@ -140,21 +144,22 @@ def callback(url):
 def show_progress():
     global total_rows
     global processed_row
+    global source_of_csv_file
 
     while not constants.stop_processing:
-        l1.config(text= "\nProcessing.",bg='green', fg='black', font=labelfont, height=3, width=10)
+        l1.config(text= source_of_csv_file +"\nProcessing.",bg='green', fg='black', font=labelfont, height=3, width=10)
         l1.pack(expand=YES, fill=BOTH)
         if not constants.stop_processing:
             time.sleep(0.2)
-        l1.config(text= "\nProcessing. .",bg='green', fg='black', font=labelfont, height=3, width=10)
+        l1.config(text= source_of_csv_file + "\nProcessing. .",bg='green', fg='black', font=labelfont, height=3, width=10)
         l1.pack(expand=YES, fill=BOTH)
         if not constants.stop_processing:
             time.sleep(0.2)
-        l1.config(text= "\nProcessing. . .",bg='green', fg='black', font=labelfont, height=3, width=10)
+        l1.config(text= source_of_csv_file + "\nProcessing. . .",bg='green', fg='black', font=labelfont, height=3, width=10)
         l1.pack(expand=YES, fill=BOTH)
         if not constants.stop_processing:
             time.sleep(0.2)
-        l1.config(text= "\nProcessing. . . .",bg='green', fg='black', font=labelfont, height=3, width=10)
+        l1.config(text= source_of_csv_file + "\nProcessing. . . .",bg='green', fg='black', font=labelfont, height=3, width=10)
         l1.pack(expand=YES, fill=BOTH)
         if not constants.stop_processing:
             time.sleep(0.2)
@@ -181,8 +186,16 @@ def event_handler():
                 time.sleep(0.1)
                 l1.config(text= event_tuple[0] + "\nFailed Processing\n" + event_tuple[1],bg='red', fg='black', font=labelfont, height=3, width=10)
                 l1.pack(expand=YES, fill=BOTH)
+            elif event_tuple[0] == constants.os_error:
+                btn1['state'] = 'active'
+                btn2['state'] = 'active'
+                btn3['state'] = 'active'
+                btn2['text'] = "Start Processing"
+                time.sleep(0.1)
+                l1.config(text= event_tuple[0] + "\nFailed Processing\n" + event_tuple[1],bg='red', fg='black', font=labelfont, height=3, width=10)
+                l1.pack(expand=YES, fill=BOTH)
             else:
-                l1.config(text= "Unknown Error" + "\nFailed Processing\n" + event_tuple[1],bg='red', fg='black', font=labelfont, height=3, width=10)
+                l1.config(text= "Unknown Error" + "\nFailed Processing\n",bg='red', fg='black', font=labelfont, height=3, width=10)
                 l1.pack(expand=YES, fill=BOTH)
         except Exception:
             print ("no events to process")

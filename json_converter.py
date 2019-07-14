@@ -70,7 +70,11 @@ def convert_to_json(filename,root):
             res = es.indices.delete(index = INDEX_NAME)
             print(" response: '%s'" % (res))
     except:
-        raise ConnectionError("Cannot connect to Elasticsearch")
+        constants.stop_processing = True
+        err_str = "Enviornment error connecting to elasticsearch"
+        err = (constants.os_error, err_str)
+        constants.notify_q.put(err)
+        return
     
     create_machine_data(rows,root)
     
