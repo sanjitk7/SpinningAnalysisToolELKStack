@@ -50,7 +50,7 @@ img = img.zoom(3)
 img=img.subsample(8)
 img_lbl = tk.Label(root,image=img,bg='red')
 
-img_logo = tk.PhotoImage(file="sm_logo.gif")
+img_logo = tk.PhotoImage(file="saraswathy_logo.gif")
 title_label = tk.Label(root, text="Saraswathi Mills", image=img_logo, fg='green',height=170, width=400, relief=RAISED).pack(pady=10)
 
 analytics_logo = tk.PhotoImage(file="analytics.gif")
