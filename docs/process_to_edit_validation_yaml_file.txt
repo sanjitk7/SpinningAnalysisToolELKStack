@@ -1,0 +1,15 @@
+How to edit  yaml file manually:
+(1) Open file data_validation.yaml in oe-reports folder in notepad or any text editor
+(2) Copy content of the file into online yaml editor tool
+   https://onlineyamltools.com/edit-yaml
+   - Do a Ctrl + A to copy entire context of notepad
+   - Go to online editor and do a Ctrl + V on the black screen section
+(3) Edit the content with necessary change
+(4) Make sure there are no error (red flag) in the final file
+(5) yaml uses 2 spaces as marker. Do not use tab.
+(6) After completing edit, copy the content of online editor
+    - Click on 'Copy to Clipboard' oon online editor
+    - Go back to the original notepad
+    - Select Ctrl + A to highligth existing content and paste the clipboard with Ctrl + V command
+(7) Save the notepad file
+(8) Hurrah!! You are done with the changes, close the notepad now

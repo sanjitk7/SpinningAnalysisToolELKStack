@@ -11,7 +11,11 @@ stop_processing = False
 successfully_processed = False
 notify_q = queue.Queue(maxsize = 30)
 csv_filename = 'OEProductionReport.csv'
+validation_config_file = '../config/data_validation.yaml'
+processing_mode = 'parallel'
+index_name='oe_index'
 
 #Event types
 os_error="OS_ERROR"
 file_not_found="FILE_NOT_FOUND"
+value_error="VALUE_ERROR"

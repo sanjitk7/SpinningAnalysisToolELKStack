@@ -1,0 +1,8 @@
+Qs: I'm getting git@bitbucket.org: Permission denied (publickey) error when I try git pull?
+Ans: 
+>> ssh-add ~/.ssh/bitbicket_id.rsa
+Identity added: ...
+Now you should have permission.
+
+
+

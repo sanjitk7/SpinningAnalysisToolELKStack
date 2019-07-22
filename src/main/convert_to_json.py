@@ -1,123 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sat Jun 29 12:32:34 2019
+Created on Sun Jul 14 17:21:52 2019
 
 @author: eperiyasamy
 """
+import datetime
+from elasticsearch import Elasticsearch
 
 import constants
 
-import csv
-import json
-import datetime
-import progress_bar_queue
-import queue
-import time
-from threading import current_thread
-
-import test_func
-from UI_notification_queue import UINotification
-
-import sys
-#print("sys path:", sys.path)
-from elasticsearch import Elasticsearch
-
-glb_id=0
-carding_count = 0
-total_rows=0
-processed_row=0
-
 ES_HOST = {"host" : "localhost", "port" : 9200}
-INDEX_NAME='oe_index'
-TYPE_NAME_MACHINE = 'machine'
-SUCCESS_EVENT = 'success'
-
 es = Elasticsearch(hosts = [ES_HOST])
+TYPE_NAME_MACHINE = 'machine'
 
-def convert_to_json(filename,root):
-    global carding_count
-    global processed_row
-    global notify_q, glb_id
-    
-    # Initialize for every run as processed_row is a global variable
-    processed_row=0
-    
-    rows=[]
-    try:
-        with open(filename) as f:
-            reader = csv.DictReader(f)
-            rows = list(reader)
-    except FileNotFoundError:
-        constants.stop_processing = True
-        err_str = "File not found: " + filename
-        err = (constants.file_not_found, err_str)
-        constants.notify_q.put(err)
-        return
-    except EnvironmentError:
-        constants.stop_processing = True
-        err_str = "Enviornment error opening " + filename
-        err = (constants.os_error, err_str)
-        constants.notify_q.put(err)
-        return
-    
-    with open('test.json', 'w') as f:
-        json.dump(rows, f)
-        
-    try:    
-        if es.indices.exists(INDEX_NAME):
-            print("deleting '%s' index..." % (INDEX_NAME))
-            res = es.indices.delete(index = INDEX_NAME)
-            print(" response: '%s'" % (res))
-    except:
-        constants.stop_processing = True
-        err_str = "Enviornment error connecting to elasticsearch"
-        err = (constants.os_error, err_str)
-        constants.notify_q.put(err)
-        return
-    
-    create_machine_data(rows,root)
-    
-    # publish event to UI event queue if processed successfully
-    if not constants.stop_processing:
-        constants.successfully_processed = True
-        msg = (SUCCESS_EVENT, "")
-        constants.notify_q.put(msg)
-    
-    # Change the state for other consumers
-    constants.stop_processing = True
-    glb_id = 0
-    
-def create_machine_data(rows,root):
-    global processed_row
-    global total_rows
-    
-#    q = queue.Queue(maxsize=30)
-#    app = progress_bar_queue.SomeClass(q,len(rows),root)
-#    #print ("app:" + str(app))
-#    app.start()
-    #app.mainloop()
-    total_rows= len(rows)
-    #print(rows[0])
-    new_dict = {}
-
-    for row in rows:
-        if constants.stop_processing:
-            break
-        for k in row:
-            if "Unnamed"  not in k:
-                new_dict[k] = row[k]
-                
-            else:
-                #print(new_dict)
-                persist_to_es(new_dict)
-                #time.sleep(1)
-                new_dict.clear()
-                processed_row += 1
-#                app.onThread(app.increment_progress_bar, processed_row)
-                if constants.stop_processing:
-                    break
-    
 def format_date(date):
     return datetime.datetime.strptime(date,'%d.%m.%y').strftime('%Y-%m-%d')+ "T12:00:00"
 
@@ -129,13 +25,24 @@ def convert_to_float(number):
 
 def convert_to_float_2(number):
     return round(float(number),2)
-        
+
+def connect_and_delete_index():
+    global es
     
-    
-def persist_to_es(d):
-    global glb_id
-    global carding_count
-    
+    try:    
+        if es.indices.exists(constants.index_name):
+            print("deleting '%s' index..." % (constants.index_name))
+            res = es.indices.delete(index = constants.index_name)
+            print(" response: '%s'" % (res))
+    except:
+        print ("exception")
+        constants.stop_processing = True
+        err_str = "Enviornment error connecting to elasticsearch"
+        err = (constants.os_error, err_str)
+        constants.notify_q.put(err)
+        return
+
+def persist_to_es(d, chunk_code, id_row):
     #create machine data
     if len(d)==0 :
         return
@@ -156,16 +63,13 @@ def persist_to_es(d):
     if "machine_type" in d1:
         json_machine_dict["machine_type"] =d1["machine_type"]
         
-    if json_machine_dict["machine_type"] == 'CARDING':
-        carding_count += 1
-        
     if "machine_id" in d1:
         json_machine_dict["machine_id"] =d1["machine_id"]
         
     if "godown" in d1:
         json_machine_dict["godown"] =d1["godown"]
         
-    if "date" in d1 and d1["date"] != "":
+    if "date" in d1 and d1["date"] != "":   
         json_machine_dict["date"]=format_date(d1["date"])
         
     prod_dict = {}
@@ -233,9 +137,9 @@ def persist_to_es(d):
     #print("\n")
     #print(json_machine_dict)
     if json_machine_dict:
-        res = es.index(index= INDEX_NAME, doc_type=TYPE_NAME_MACHINE, id=glb_id+1, body=json_machine_dict )
-        glb_id+=1
-        
+        id_new = int(str(chunk_code)+str(id_row)+str(0))
+        res = es.index(index= constants.index_name, doc_type=TYPE_NAME_MACHINE, id=id_new, body=json_machine_dict )
+        print("id:",id_new)
     ### Process shift waste
     
         if "filter_waste" in d1 or "sweep_waste" in d1 or "MBO_waste" in d1 or "powder_waste" in d1 or "flat_waste" in d1:
@@ -286,10 +190,11 @@ def persist_to_es(d):
             #print("_____________________________\n")
             #print(json_waste_dict)
             if json_waste_dict:
-                res = es.index(index= INDEX_NAME, doc_type=TYPE_NAME_MACHINE, id=glb_id+1,
+                id_new = int(str(chunk_code)+str(id_row)+str(1))
+#                print ("json_waste_dict:", json_waste_dict)
+                res = es.index(index= constants.index_name, doc_type=TYPE_NAME_MACHINE, id=id_new,
                                body=json_waste_dict )
-                glb_id+=1
-                print(glb_id)
+                print("id:",id_new)
     
     daily_waste_dict={}
     daily_waste_exist = False
@@ -309,10 +214,10 @@ def persist_to_es(d):
             daily_waste_dict["date"]=format_date(d1["date"])
      
     if daily_waste_dict:
-        res = es.index(index= INDEX_NAME, doc_type=TYPE_NAME_MACHINE, id=glb_id+1,
-                               body=daily_waste_dict )
-        glb_id+=1
-        print(glb_id)
+        id_new = int(str(chunk_code)+str(id_row)+str(2))
+        res = es.index(index= constants.index_name, doc_type=TYPE_NAME_MACHINE, id=id_new,
+                       body=daily_waste_dict )
+        print("id:",id_new)
     
         
     #print("_____________________________\n")
@@ -335,18 +240,11 @@ def persist_to_es(d):
     #print("_____________________________\n")
     #print(mix_input_dict)
     if mix_input_dict:
-        res = es.index(index= INDEX_NAME, doc_type=TYPE_NAME_MACHINE,
-                       id=glb_id+1, body=mix_input_dict )
-        glb_id+=1
+        id_new = int(str(chunk_code)+str(id_row)+str(3))
+        res = es.index(index= constants.index_name, doc_type=TYPE_NAME_MACHINE,
+                       id=id_new, body=mix_input_dict )
+        print("id:",id_new)
     
     print("+++++++++++++++++++++++++++++\n")
     
-
-    
-
-#res = es.index(index= INDEX_NAME, doc_type=TYPE_NAME_MACHINE, id=1, body= machine1a_day1)
-#res = es.get(index= INDEX_NAME, doc_type=TYPE_NAME_MACHINE, id=1)
- 
-    
-    
-#convert_to_json("OEProductionChart.csv")
+connect_and_delete_index()

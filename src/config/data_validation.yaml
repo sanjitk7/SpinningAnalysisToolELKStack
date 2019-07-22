@@ -1,0 +1,44 @@
+--- 
+color/lot: 
+  data_type:string 
+  max_length:10 
+  min_length:2
+count: "data_type:string max_length:4 min_length:2"
+cur_production: "data_type:numeric min_value:0 max_value:10000 required:true"
+doffer_rpm: "data_type:integer min_value:50 max_value:250"
+eb_blow: "data_type:numeric min_value:0 max_value:500"
+eb_units: "data_type:numeric min_value:0 max_value:800"
+filter_waste: "data_type:numeric min_value:0 max_value:90"
+godown: 
+  data_type: enum
+  required: true
+  value: 
+    - A
+    - B
+    - D
+    - C
+machine_type: 
+  data_type: enum
+  required: true
+  value: 
+    - CARDING
+    - DRAWING
+    - "CONE WINDING"
+    - tfo
+    - "OE MACHINE"
+mix_color: "data_type:string max_length:20 min_length:4"
+mix_kgs: "data_type:numeric min_value:0 max_value:10000"
+running_hours: "data_type:numeric min_value:1 max_value:24"
+shift: 
+  data_type: enum
+  required: true
+  value: 
+    - A12
+    - C12
+    - B8
+    - C8
+    - A8
+sider_name1: "data_type:string max_length:20 min_length:2"
+sider_name2: "data_type:string max_length:20 min_length:2"
+sider_name3: "data_type:string max_length:20 min_length:2"
+sweep_waste: "data_type:numeric min_value:0 max_value:90"

@@ -24,6 +24,7 @@ import webbrowser
 #import Tkinter, Tkconstants, tkFileDialog
 import pandas as pd
 import constants
+import validate_csv_data
 from json_converter import convert_to_json
 from UI_notification_queue import UINotification
 #from PIL import ImageTK, Image
@@ -46,15 +47,15 @@ source_of_csv_file = ""
 error_message = tk.StringVar()
 error_message.set('No Errors')
 
-img = tk.PhotoImage(file="oeProdImg.gif")
+img = tk.PhotoImage(file="../../resource/image/oeProdImg.gif")
 img = img.zoom(3)
 img=img.subsample(8)
 img_lbl = tk.Label(root,image=img,bg='red')
 
-img_logo = tk.PhotoImage(file="saraswathy_logo.gif")
+img_logo = tk.PhotoImage(file="../../resource/image/saraswathy_logo.gif")
 title_label = tk.Label(root, text="Saraswathi Mills", image=img_logo, fg='green',height=170, width=400, relief=RAISED).pack(pady=10)
 
-analytics_logo = tk.PhotoImage(file="analytics.gif")
+analytics_logo = tk.PhotoImage(file="../../resource/image/analytics.gif")
 analytics_logo = analytics_logo.zoom(2)
 analytics_logo=analytics_logo.subsample(10)
 analytics_lbl = tk.Label(root,image=analytics_logo)
@@ -79,7 +80,8 @@ def upload():
             data_xls = pd.read_excel(filename, 'Sheet1', index_col=None)
             data_xls.to_csv(constants.csv_filename, encoding='utf-8')
             source_of_csv_file = filename
-            
+            validate_csv_data.validate_csv_file(constants.csv_filename)
+
             l1.config(text= filename + "\nSuccessfully Uploaded!",bg='green', fg='black', font=labelfont, height=3, width=10)
             l1.pack(expand=YES, fill=BOTH)
     except Exception as e:
