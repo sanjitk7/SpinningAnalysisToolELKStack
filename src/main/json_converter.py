@@ -82,8 +82,7 @@ def create_machine_data(rows,root, filename):
         if platform.system() == 'Windows':
              out_q = Queue()
              exc_q = Queue()
-             worker_process.worker(1, rows, exc_q, out_q)
-             resultlist = mp_persist_to_es(rows)
+             resultlist = worker_process.worker(1, rows, exc_q, out_q)
         elif platform.system() == 'Darwin':
             resultlist = mp_persist_to_es(rows)
         else:
