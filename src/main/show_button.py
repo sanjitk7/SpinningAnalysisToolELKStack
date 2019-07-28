@@ -77,7 +77,8 @@ def upload():
         filename = filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("excel files","*.xlsx"),("all files","*.*")))
        
         if filename:
-            data_xls = pd.read_excel(filename, 'Sheet1', index_col=None)
+            # Read all sheets in excel file
+            data_xls = pd.read_excel(filename, sheet_name='Sheet1', index_col=None)
             data_xls.to_csv(constants.csv_filename, encoding='utf-8')
             source_of_csv_file = filename
             validate_csv_data.validate_csv_file(constants.csv_filename)

@@ -5,7 +5,7 @@ color/lot:
   min_length:2
 count: "data_type:string max_length:4 min_length:2"
 cur_production: "data_type:numeric min_value:0 max_value:10000 required:true"
-doffer_rpm: "data_type:integer min_value:50 max_value:250"
+doffer_rpm: "data_type:numeric min_value:50 max_value:250"
 eb_blow: "data_type:numeric min_value:0 max_value:500"
 eb_units: "data_type:numeric min_value:0 max_value:800"
 filter_waste: "data_type:numeric min_value:0 max_value:90"
