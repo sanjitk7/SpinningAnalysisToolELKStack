@@ -10,10 +10,12 @@ import constants
 
 import csv
 import json
+import platform
 
 import queue
 import time
 from threading import current_thread
+import traceback
 
 from UI_notification_queue import UINotification
 from convert_to_json import connect_and_delete_index
@@ -58,7 +60,7 @@ def convert_to_json(filename,root):
         
     connect_and_delete_index()
     
-    create_machine_data(rows,root)
+    create_machine_data(rows,root, filename)
     
     # publish event to UI event queue if processed successfully
     if not constants.stop_processing:
@@ -70,17 +72,26 @@ def convert_to_json(filename,root):
     constants.stop_processing = True
     glb_id = 0
     
-def create_machine_data(rows,root):
+def create_machine_data(rows,root, filename):
     global processed_row
     global total_rows
     
     total_rows= len(rows)
     
     try:
-        resultlist = mp_persist_to_es(rows)
+        if platform.system() == 'Windows':
+             out_q = Queue()
+             exc_q = Queue()
+             worker_process.worker(1, rows, exc_q, out_q)
+             resultlist = mp_persist_to_es(rows)
+        elif platform.system() == 'Darwin':
+            resultlist = mp_persist_to_es(rows)
+        else:
+            raise Exception("Platform Unsupported")
+            
     except Exception as e:
         constants.stop_processing = True
-        err_str = "Bad data" + filename
+        err_str = "Bad data in " + filename
         err = (constants.value_error, err_str)
         constants.notify_q.put(err)
         return
@@ -91,6 +102,4 @@ def create_machine_data(rows,root):
 #res = es.index(index= INDEX_NAME, doc_type=TYPE_NAME_MACHINE, id=1, body= machine1a_day1)
 #res = es.get(index= INDEX_NAME, doc_type=TYPE_NAME_MACHINE, id=1)
  
-    
-    
 #convert_to_json("OEProductionChart.csv")

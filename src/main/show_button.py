@@ -20,6 +20,7 @@ except:
 import time
 import threading
 import webbrowser
+import os
    
 #import Tkinter, Tkconstants, tkFileDialog
 import pandas as pd
@@ -90,6 +91,10 @@ def upload():
         btn3['state'] = 'active'
         print ("exception:", str(e), ":", filename)
         if filename:
+            try:
+                os.remove(constants.csv_filename)
+            except OSError:
+                pass
             l1.config(text= filename + "\nFailed Uploading\n" + str(e),bg='red', fg='black', font=labelfont, height=3, width=10)
             l1.pack(expand=YES, fill=BOTH)
             
@@ -198,6 +203,7 @@ def event_handler():
                 l1.config(text= event_tuple[0] + "\nFailed Processing\n" + event_tuple[1],bg='red', fg='black', font=labelfont, height=3, width=10)
                 l1.pack(expand=YES, fill=BOTH)
             else:
+                print ("event tuple:" + str(event_tuple))
                 l1.config(text= "Unknown Error" + "\nFailed Processing\n",bg='red', fg='black', font=labelfont, height=3, width=10)
                 l1.pack(expand=YES, fill=BOTH)
         except Exception:
