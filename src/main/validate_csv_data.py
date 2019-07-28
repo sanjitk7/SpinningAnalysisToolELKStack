@@ -90,17 +90,17 @@ def validate_data(row_num, input_data_tuple, config_dict):
         if(input_data_tuple[1] != ""):
             # check for allowed discrete value
             if (config_dict['required']) == True and input_data_tuple[1] == "":
-                raise Exception("Validation Error:" + " a required data missing ".join(input_data_tuple) + "in row " + str(row_num))
+                raise Exception("Validation Error:" + " a required data missing ".join(input_data_tuple) + " in row " + str(row_num))
             if input_data_tuple[1] not in config_dict["value"]:
-                raise Exception("Validation Error:" + " has invalid enum ".join(input_data_tuple) + "in row " + str(row_num) )
+                raise Exception("Validation Error:" + " has invalid enum ".join(input_data_tuple) + " in row " + str(row_num) )
     
     elif (config_dict['data_type'] == 'string'):
         if(input_data_tuple[1] != ""):
             # check for max and min length
             if(int(config_dict["min_length"]) > len(input_data_tuple[1])):
-                raise Exception("Validation Error:" + " less than allowed min ".join(input_data_tuple) + "in row " + str(row_num))
+                raise Exception("Validation Error:" + " less than allowed min ".join(input_data_tuple) + " in row " + str(row_num))
             if(int(config_dict["max_length"]) < len(input_data_tuple[1])):
-                raise Exception("Validation Error:" + " greater than allowed max ".join(input_data_tuple) + "in row " + str(row_num))
+                raise Exception("Validation Error:" + " greater than allowed max ".join(input_data_tuple) + " in row " + str(row_num))
             
     elif (config_dict['data_type'] == 'numeric'):
         if(input_data_tuple[1] != ""):
@@ -108,12 +108,12 @@ def validate_data(row_num, input_data_tuple, config_dict):
             try:
                 float(input_data_tuple[1])
             except ValueError:
-                raise Exception("Validation Error:" + " not a numeric value ".join(input_data_tuple)+ "in row " + str(row_num))
+                raise Exception("Validation Error:" + " not a numeric value ".join(input_data_tuple)+ " in row " + str(row_num))
             # check for min, max and required
             if(float(config_dict["min_value"]) > float(input_data_tuple[1])):
-                raise Exception("Validation Error:" + " less than allowed min ".join(input_data_tuple) + "in row " + str(row_num))
+                raise Exception("Validation Error:" + " less than allowed min ".join(input_data_tuple) + " in row " + str(row_num))
             if(float(config_dict["max_value"]) < float(input_data_tuple[1])):
-                raise Exception("Validation Error:" + " greater than allowed max ".join(input_data_tuple) + "in row " + str(row_num))
+                raise Exception("Validation Error:" + " greater than allowed max ".join(input_data_tuple) + " in row " + str(row_num))
     return
         
 #if __name__ == '__main__':
