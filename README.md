@@ -66,13 +66,13 @@ If you see error as below, it means elasticsearch server is not up and running.
     ```
     This should run server at port 9200. Hit the server at 'http://localhost:9200' to verify.
   
-  ## Start application again
+## Start application again
     ```
     >>> python3 show_button.py
     ```
 * Home page
 
-    ![Home page](./docs/oe_application_elasticsearch_home_page.png)
+![Home page](./docs/oe_application_elasticsearch_home_page.png)
 
 * File uploaded page
 ![Uploaded page](./docs/oe_application_elasticsearch_uploaded_success.png)
@@ -90,7 +90,7 @@ If you see error as below, it means elasticsearch server is not up and running.
 >> brew install elastic/tap/kibana-full
 ```
 
-* Start Kibana server
+## Start Kibana server
 ```
 >>> ~/Applications/homebrew/Cellar/kibana-full/7.5.2
 
@@ -101,7 +101,7 @@ If you see error as below, it means elasticsearch server is not up and running.
 
   This should open Kibana dashboard in your default webbrowser.
 
-  ## Kibana data visualization
+## Kibana data visualization
 
   * index data using oe_index
   * Configure x-axis and y-axis for type of graph you want to plot
